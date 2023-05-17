@@ -24,9 +24,9 @@ ip_list = []
 with open('honeypot_logs.json') as logs:
     for line in logs:
         data = json.loads(line)
-        if data['eventid'] == "cowrie.session.connect":
+        if data['eventid'] == "cowrie.session.connect" and data['src_ip'] not in ip_list:
             ip_list.append(data['src_ip'])
             
 for ip in ip_list:
     check_ip(ip)
-    time.sleep(15) # czekaj 15 sekund między zapytaniami, aby uniknąć limitu 4 requests/minutę
+    time.sleep(15) # wait 15 seconds to avoid time limit (4 requests per minute)
